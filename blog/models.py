@@ -1,11 +1,12 @@
 from blog.database import Base
-from sqlalchemy import Column,Integer,String,ForeignKey
+from sqlalchemy import Column,Integer,String,ForeignKey,Boolean
 from sqlalchemy.orm import relationship
 class blog(Base):
     __tablename__="blogs"
     id = Column(Integer,primary_key=True)
     title = Column(String)
     body = Column(String)
+    edited = Column(Boolean,default=False)
     user_id = Column(Integer,ForeignKey("user.id"))
     user = relationship("user",back_populates="blog")
     comments = relationship("comments", back_populates="blog")
@@ -26,6 +27,7 @@ class comments(Base):
     __tablename__="comments"
     id=Column(Integer,primary_key=True)
     comment = Column(String)
+    edited = Column(Boolean,default=False)
     user_id = Column(Integer,ForeignKey("user.id"))
     user = relationship("user",back_populates="comments")
     blog_id = Column(Integer,ForeignKey("blog.id"))
@@ -43,6 +45,7 @@ class bookmark(Base):
 class reply(Base):
     __tablename__ = "replies"
     id=Column(Integer,primary_key=True)
+    edited = Column(Boolean,default=False)
     comment_id = Column(Integer,ForeignKey("comments.id"))
     comment = relationship("comments",back_populates="reply") 
     user_id = Column(Integer,ForeignKey("user.id"))
